@@ -7,7 +7,7 @@ import java.util.Queue;
 public class SearchTree {
 
   private static class Node {
-    private String key;
+    private final String key;
     private Integer value;
 
     private Node left;
@@ -92,11 +92,10 @@ public class SearchTree {
 
   public static Iterable<String> sortWithTree(String[] data) {
     SearchTree searchTree = new SearchTree();
-    for (int i = 0; i < data.length; i++) {
-      searchTree.add(data[i], 0);
+    for (String datum : data) {
+      searchTree.add(datum, 0);
     }
-    Iterable<String> sortedData = searchTree.getKeys();
-    return sortedData;
+    return searchTree.getKeys();
   }
 
   public String getMaxKey() {
