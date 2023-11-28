@@ -9,20 +9,22 @@ public class SearchTree {
   private static class Node {
     private final String key;
     private Integer value;
+    private int height;
 
     private Node left;
     private Node right;
 
-    public Node(String key, int value) {
+    public Node(String key, int value, int height) {
       this.key = key;
       this.value = value;
+      this.height = height;
       this.left = null;
       this.right = null;
     }
   }
 
   private Node root;
-  private int size = 0;
+  private int rootHeight = 0;
 
   public SearchTree() {
     root = null;
@@ -39,21 +41,33 @@ public class SearchTree {
   }
 
   public void add(String key, Integer value) {
-    root = add(root, key, value);
-    // SIZE
-    size++;
+    root = add(root, key, value, 1);
   }
 
-  private Node add(Node node, String key, Integer value) {
-    if (node == null) return new Node(key, value); // base condition
+  private Node add(Node node, String key, Integer value, int height) {
+    if (node == null) return new Node(key, value, 1); // base condition
 
     if (key.compareTo(node.key) == 0) {
       node.value = value;
       return node;
     }
-    if (key.compareTo(node.key) < 0) node.left = add(node.left, key, value);
-    if (key.compareTo(node.key) > 0) node.right = add(node.right, key, value);
+    
+    if (key.compareTo(node.key) < 0) {
+      height = height + 1;
+      if (height > rootHeight) rootHeight = height;
+      node.left = add(node.left, key, value, height);
+    }
+    if (key.compareTo(node.key) > 0) {
+      height = height + 1;
+      if (height > rootHeight) rootHeight = height;
+      node.right = add(node.right, key, value, height);
+    }
+    
     return node;
+  }
+
+  public int height() {
+    return rootHeight;
   }
 
   public Iterable<String> getKeys(){
@@ -116,20 +130,17 @@ public class SearchTree {
     inorder(max, node.right);
   }
 
-  // SIZE
-  public int size() {
-    return size;
-  }
-
   public static void main(String[] args) {
     SearchTree tree = new SearchTree();
-    System.out.println(tree.size());
+    System.out.println(tree.height());
     tree.add("C", 10);
     tree.add("A", 5);
     tree.add("B", 2);
     tree.add("F", 100);
     tree.add("K", 100);
-    System.out.println(tree.size());
+    tree.add("X", 100);
+    tree.add("Z", 100);
+    System.out.println(tree.height());
 
     System.out.println(tree.getMaxKey());
 
