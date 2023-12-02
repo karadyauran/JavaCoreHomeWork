@@ -140,6 +140,7 @@ public class SearchTree {
     tree.add("K", 100);
     tree.add("X", 100);
     tree.add("Z", 100);
+    tree.add("H", 15);
     System.out.println(tree.height());
 
     System.out.println(tree.getMaxKey());
